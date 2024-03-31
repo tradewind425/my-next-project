@@ -35,7 +35,7 @@ const Main: React.FC<MainProps> = ({ foods, currentPage, totalPages, setCurrentP
 
       <div className="flex flex-col items-center justify-center h-full">
         {/* メインボックス */}
-        <div className="bg-green-300 text-white p-64 rounded-lg shadow-lg mb-8 max-w-6xl">
+        <div className="bg-green-300 text-white p-64 rounded-lg shadow-lg mt-8 mb-8 max-w-6xl">
           <h2 className="text-3xl font-bold">Hello World</h2>
         </div>
 
