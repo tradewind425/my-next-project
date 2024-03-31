@@ -1,15 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Main from '../src/components/strapi/Main';
-
-// Strapiから取得する食品データの型定義をここに保持
-type Food = {
-  id: number;
-  attributes: {
-    foodname: string;
-    description: string;
-    price: number;
-  };
-};
+import { Food } from '../src/components/strapi/types/types';
 
 // APIから取得する応答の型定義をここに保持
 type ApiResponse = {

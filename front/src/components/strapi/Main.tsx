@@ -1,15 +1,6 @@
 // src/components/strapi/Main.tsx
 import React from 'react';
-
-// Strapiから取得する食品データの型定義
-type Food = {
-  id: number;
-  attributes: {
-    foodname: string;
-    description: string;
-    price: number;
-  };
-};
+import { Food } from './types/types';
 
 // Propsの型定義
 interface MainProps {
