@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { PaddleController } from '../../controllers/PaddleController';
 
 export class Paddle {
-    protected sprite: Phaser.Physics.Matter.Sprite;
+    protected sprite!: Phaser.Physics.Matter.Sprite;
     private controller: PaddleController;
     private initialY: number;
 
@@ -12,9 +12,9 @@ export class Paddle {
         this.createPaddleTexture(x, y);
         // PaddleControllerをインスタンス化
         this.controller = new PaddleController(this.scene);
-        //this.sprite.setRectangle(120, 20); // Spriteに対して四角形の物理形状を設定
-        //this.sprite.setMass(10000); // 非常に大きな質量を設定
-        //this.sprite.setDensity(10000); // 非常に大きな密度を設定
+        this.sprite.setRectangle(120, 20); // Spriteに対して四角形の物理形状を設定
+        this.sprite.setMass(10000); // 非常に大きな質量を設定
+        this.sprite.setDensity(10000); // 非常に大きな密度を設定
     }
 
      //Entityの形状でテクスチャを生成する関数
@@ -26,7 +26,7 @@ export class Paddle {
         graphics.destroy(); /// Graphicsオブジェクトはもう不要なので破棄
 
         // 生成したテクスチャを使用してスプライトを作成
-        this.sprite = this.scene.matter.add.sprite(x, y, 'paddleTexture', null, {
+        this.sprite = this.scene.matter.add.sprite(x, y, 'paddleTexture', undefined, {
             isStatic: false
         });
     }

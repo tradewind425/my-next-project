@@ -14,7 +14,7 @@ export const gameDimensions = {
 
 // 物理エンジンを選択する変数 0:Arcade Pysix 1:Matter
 type PhysicsEngineType = 0 | 1;
-export const physicsEngineType: PhysicsEngineType = 0;
+export const physicsEngineType: PhysicsEngineType = 1;
 
 // 物理エンジンの設定を動的に決定する関数
 const getPhysicsConfig = (engineType: PhysicsEngineType) => {

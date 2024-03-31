@@ -1,14 +1,14 @@
 import Phaser from 'phaser';
 
 export class PaddleController {
-    private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
-    private moveLeftKey: Phaser.Input.Keyboard.Key; // Aキー
-    private moveRightKey: Phaser.Input.Keyboard.Key; // Dキー
-    private jumpKey: Phaser.Input.Keyboard.Key;
-    private rotateKey: Phaser.Input.Keyboard.Key;
+    private cursorKeys!: Phaser.Types.Input.Keyboard.CursorKeys;
+    private moveLeftKey!: Phaser.Input.Keyboard.Key; // Aキー
+    private moveRightKey!: Phaser.Input.Keyboard.Key; // Dキー
+    private jumpKey!: Phaser.Input.Keyboard.Key;
+    private rotateKey!: Phaser.Input.Keyboard.Key;
     private isJumping: boolean = false;
     private isRotating: boolean = false;
-    private initialY: number;
+    private initialY!: number;
     private jumpParams = {
         height: 60,
         frames: 5,

@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 export class Ball {
-    private sprite: Phaser.Physics.Matter.Sprite;
+    private sprite!: Phaser.Physics.Matter.Sprite;
     private constantVelocity: { x: number, y: number } = { x: 10, y: 10 }; // 一定の速度を設定
 
     constructor(protected scene: Phaser.Scene, x: number, y: number) {
@@ -20,7 +20,7 @@ export class Ball {
         graphics.generateTexture('ballTexture', radius * 2, radius * 2); // テクスチャを生成
         graphics.destroy(); // Graphicsオブジェクトはもう不要なので破棄
         // 生成したテクスチャを使用してスプライトを作成
-        this.sprite = this.scene.matter.add.sprite(x, y, 'ballTexture', null, {
+        this.sprite = this.scene.matter.add.sprite(x, y, 'ballTexture', undefined, {
             isStatic: false
         });
     }

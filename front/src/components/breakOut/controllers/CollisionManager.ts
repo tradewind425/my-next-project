@@ -8,9 +8,9 @@ export class CollisionManager {
     }
 
     private setupCollisionListener(): void {
-        this.scene.matter.world.on('collisionstart', (event) => {
+        this.scene.matter.world.on('collisionstart', (event: { pairs: { bodyA: any; bodyB: any; }[]; }) => {
             event.pairs.forEach(({ bodyA, bodyB }) => {
-                const handleBlockCollision = (body) => {
+                const handleBlockCollision = (body: { collisionFilter: { category: number; }; gameObject: { getData: (arg0: string) => string; destroy: () => void; }; }) => {
                     if (body.collisionFilter.category & 0x0002 && body.gameObject?.getData('type') === 'block') {
                         body.gameObject.destroy();
                         // ブロックが破壊されたことをGameSceneに通知

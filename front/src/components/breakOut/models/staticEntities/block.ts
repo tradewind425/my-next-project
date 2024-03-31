@@ -2,7 +2,7 @@
 import Phaser from 'phaser';
 
 export class Block {
-    private sprite: Phaser.Physics.Matter.Sprite;
+    private sprite!: Phaser.Physics.Matter.Sprite;
     
     //blocの大きさのデフォルト設定を定義している
     constructor(protected scene: Phaser.Scene, x: number, y: number, width: number = 80, height: number = 30) {
@@ -21,7 +21,7 @@ export class Block {
         graphics.destroy(); // Graphicsオブジェクトはもう不要なので破棄
 
         // 生成したテクスチャを使用してスプライトを作成
-        this.sprite = this.scene.matter.add.sprite(x, y, 'blockTexture', null, {
+        this.sprite = this.scene.matter.add.sprite(x, y, 'blockTexture', undefined, {
             isStatic: true
         });
     }

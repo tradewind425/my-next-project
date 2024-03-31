@@ -7,10 +7,10 @@ import { gameStore } from '../store/GameStore'; // 正しいパスに修正し�
 import { setTotalBlocks } from '../store/BlockCountSlice'; // 正しいパスに修正してください
 
 export class GameScene extends Phaser.Scene {
-    private standardBall: StandardBall;
-    private standardPaddle: StandardPaddle;
-    private collisionManager: CollisionManager;
-    private totalBlocks: number;
+    private standardBall!: StandardBall;
+    private standardPaddle!: StandardPaddle;
+    private collisionManager!: CollisionManager;
+    private totalBlocks!: number;
 
     constructor() {
         super({ key: 'GameScene' });
