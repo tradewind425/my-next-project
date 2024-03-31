@@ -1,8 +1,8 @@
-// src/components/strapi/Main.tsx
-import React from 'react';
-import { Food } from './types/types';
+import React, { useEffect, useState } from 'react';
+import { Food } from './types/types'; // 型定義のパスを適宜修正
+import Header from './views/Header'; // Headerコンポーネントのインポート
+import MainBox from './views/Mainbox'; // MainBoxコンポーネントのインポート
 
-// Propsの型定義
 interface MainProps {
   foods: Food[];
   currentPage: number;
@@ -13,23 +13,11 @@ interface MainProps {
 const Main: React.FC<MainProps> = ({ foods, currentPage, totalPages, setCurrentPage }) => {
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* ヘッダー */}
-      <header className="w-full py-5 px-6 bg-green-500 text-white flex justify-between items-center">
-        <h1 className="text-xl font-bold">Bar Fractal</h1>
-        {/* ハンバーガーメニュー */}
-        <div className="space-y-2">
-          <div className="w-8 h-0.5 bg-white"></div>
-          <div className="w-8 h-0.5 bg-white"></div>
-          <div className="w-8 h-0.5 bg-white"></div>
-        </div>
-      </header>
-
+      <Header /> {/* ヘッダーコンポーネントの使用 */}
+      
       <div className="flex flex-col items-center justify-center h-full">
-        {/* メインボックス */}
-        <div className="bg-green-300 text-white p-64 rounded-lg shadow-lg mt-8 mb-8 max-w-6xl">
-          <h2 className="text-3xl font-bold">Hello World</h2>
-        </div>
-
+        <MainBox /> {/* メインボックスコンポーネントの使用 */}
+        
         {/* コンテンツセクション */}
         <div className="grid grid-cols-3 gap-4 p-4 max-w-6xl">
           {foods.map((food) => (
