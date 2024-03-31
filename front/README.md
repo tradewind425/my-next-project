@@ -15,5 +15,5 @@ React コンポーネントライブラリの制定
 Shadcn UI
 Material-UI ICONs
 FontAwesome
-Web Workers(マルチスレッドでスクリプトを実行する)
+Web Workers/Partytown(マルチスレッドでスクリプトを実行する)
 next-seo (SEO対策?)
