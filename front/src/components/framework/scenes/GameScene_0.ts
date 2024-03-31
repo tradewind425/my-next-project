@@ -4,7 +4,7 @@ import { Ball_0 } from '../models/GameModel';
 
 export class GameScene_0 extends Phaser.Scene {
     // standardBall を Ball_0 型に変更
-    private ball_0: Ball_0;
+    private ball_0!: Ball_0;
 
     constructor() {
         super({ key: 'GameScene_0' });

@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 abstract class AbstractBall {
-    protected sprite: Phaser.GameObjects.Sprite | Phaser.Physics.Arcade.Sprite | Phaser.Physics.Matter.Sprite;
+    protected sprite!: Phaser.GameObjects.Sprite | Phaser.Physics.Arcade.Sprite | Phaser.Physics.Matter.Sprite;
 
     constructor(protected scene: Phaser.Scene, x: number, y: number, protected constantVelocity: { x: number, y: number }) {
         this.createBallTexture(x, y, 8);
@@ -52,7 +52,7 @@ export class MatterBall extends AbstractBall {
         graphics.fillCircle(radius, radius, radius);
         graphics.generateTexture('ballTexture', radius * 2, radius * 2);
         graphics.destroy();
-        this.sprite = this.scene.matter.add.sprite(x, y, 'ballTexture', null, { isStatic: false });
+        this.sprite = this.scene.matter.add.sprite(x, y, 'ballTexture', undefined, { isStatic: false });
     }
 
     public setupPhysics(): void {

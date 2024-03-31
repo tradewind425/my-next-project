@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { Ball_1 } from '../models/GameModel';
 
 export class GameScene_1 extends Phaser.Scene {
-    private ball_1: Ball_1;
+    private ball_1!: Ball_1;
 
     constructor() {
         super({ key: 'GameScene_1' });

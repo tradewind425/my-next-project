@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 export class PauseScene extends Phaser.Scene {
-    private previousSceneKey: string;
+    private previousSceneKey!: string;
 
     constructor() {
         super({ key: 'PauseScene' });
