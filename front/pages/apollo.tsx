@@ -23,6 +23,18 @@ const GET_FOODS_QUERY = gql`
   }
 `;
 
+// 取得するデータの型定義
+interface FoodAttributes {
+  foodname: string;
+  description: string;
+  price: number;
+}
+
+interface Food {
+  id: string;
+  attributes: FoodAttributes;
+}
+
 const Foods = () => {
   const { data, loading, error } = useQuery(GET_FOODS_QUERY);
 
@@ -33,11 +45,11 @@ const Foods = () => {
     <div>
       <h1>Foods</h1>
       <ul>
-        {data.foods.data.map(({ id, attributes }) => (
-          <li key={id}>
-            <h2>{attributes.foodname}</h2>
-            <p>{attributes.description}</p>
-            <p>Price: {attributes.price}円</p>
+        {data.foods.data.map((food: Food) => (
+          <li key={food.id}>
+            <h2>{food.attributes.foodname}</h2>
+            <p>{food.attributes.description}</p>
+            <p>Price: {food.attributes.price}円</p>
           </li>
         ))}
       </ul>
