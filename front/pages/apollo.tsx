@@ -1,7 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { ApolloClient, InMemoryCache, gql, useQuery, ApolloProvider } from '@apollo/client';
 
-// Simplified GraphQL query without pagination variables
-const GET_FOODS_QUERY = `
+// Apollo Clientのインスタンスを作成
+const client = new ApolloClient({
+  uri: 'http://localhost:4000/graphql', // ここにGraphQLエンドポイントを指定
+  cache: new InMemoryCache(),
+});
+
+// GraphQLクエリの定義
+const GET_FOODS_QUERY = gql`
   query GetFoods {
     foods {
       data {
@@ -16,54 +23,33 @@ const GET_FOODS_QUERY = `
   }
 `;
 
-const ApolloPage = () => {
-  const [foods, setFoods] = useState([]);
-  const [error, setError] = useState(null);
+const Foods = () => {
+  const { data, loading, error } = useQuery(GET_FOODS_QUERY);
 
-  useEffect(() => {
-    const fetchFoods = async () => {
-      try {
-        const response = await fetch('http://localhost:4000/graphql', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            query: GET_FOODS_QUERY,
-            // Removed variables object since it's not needed for this simplified query
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const result = await response.json();
-        // Ensure proper access to nested data based on the updated query structure
-        setFoods(result.data.foods.data);
-      } catch (err) {
-        setError(err.message);
-      }
-    };
-
-    fetchFoods();
-  }, []);
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div>
       <h1>Foods</h1>
       <ul>
-        {foods.map(({ id, attributes: { foodname, description, price } }) => (
+        {data.foods.data.map(({ id, attributes }) => (
           <li key={id}>
-            <h2>{foodname}</h2>
-            <p>{description}</p>
-            <p>Price: {price}円</p>
+            <h2>{attributes.foodname}</h2>
+            <p>{attributes.description}</p>
+            <p>Price: {attributes.price}円</p>
           </li>
         ))}
       </ul>
     </div>
+  );
+};
+
+const ApolloPage = () => {
+  return (
+    <ApolloProvider client={client}>
+      <Foods />
+    </ApolloProvider>
   );
 };
 
