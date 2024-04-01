@@ -1,57 +1,47 @@
-# 🚀 Getting started with Strapi
+/backend
+    /api
+        - **Express**アプリケーション
+        - **Helmet**を使用したHTTPヘッダーのセキュリティ強化
+        - **Apollo Server?**
+        - CORS設定
+        - レートリミット設定
+        - JWTによる認証機能
+        - パスワードのハッシュ化 (bcrypt)
+    /strapi(CMS)
+        - Strapiプロジェクト
+        - ロールベースのアクセスコントロール
+        - 安全なAPIエンドポイントの提供
+    /security
+        - **OWASP Dependency Check**の設定ファイル
+    /models
+        - データモデル (セキュリティを考慮した設計)
+    /services
+        - ビジネスロジックとセキュリティサービス
+    /middlewares
+        - セキュリティ強化ミドルウェア
 
-Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.
 
-### `develop`
+必要なパッケージ
 
-Start your Strapi application with autoReload enabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-develop)
+    Express関連パッケージ
+        express: Expressフレームワーク本体
+        cors: クロスオリジンリソース共有(CORS)設定用のミドルウェア
+        helmet: HTTPヘッダーのセキュリティ強化用のミドルウェア
+        express-rate-limit: リクエストのレートリミットを設定するミドルウェア
+        body-parser: リクエストボディの解析用ミドルウェア
 
-```
-npm run develop
-# or
-yarn develop
-```
+    認証・セキュリティ関連パッケージ
+        jsonwebtoken: JWT認証に使用
+        bcrypt: パスワードハッシュ用
+        passport: 認証用ミドルウェア
+        passport-jwt: JWTを使用したPassport戦略
+        passport-local: ローカル認証戦略
 
-### `start`
+    Strapi
+        Strapiのインストールには特定のNPMパッケージをインストールするのではなく、CLIを使用してプロジェクトを作成します。
+        npx create-strapi-app my-project --quickstart (新規プロジェクト作成時)
+        Strapiのプラグインや依存関係はプロジェクト作成後にpackage.jsonを通して管理されます。
 
-Start your Strapi application with autoReload disabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-start)
-
-```
-npm run start
-# or
-yarn start
-```
-
-### `build`
-
-Build your admin panel. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-build)
-
-```
-npm run build
-# or
-yarn build
-```
-
-## ⚙️ Deployment
-
-Strapi gives you many possible deployment options for your project including [Strapi Cloud](https://cloud.strapi.io). Browse the [deployment section of the documentation](https://docs.strapi.io/dev-docs/deployment) to find the best solution for your use case.
-
-## 📚 Learn more
-
-- [Resource center](https://strapi.io/resource-center) - Strapi resource center.
-- [Strapi documentation](https://docs.strapi.io) - Official Strapi documentation.
-- [Strapi tutorials](https://strapi.io/tutorials) - List of tutorials made by the core team and the community.
-- [Strapi blog](https://strapi.io/blog) - Official Strapi blog containing articles made by the Strapi team and the community.
-- [Changelog](https://strapi.io/changelog) - Find out about the Strapi product updates, new features and general improvements.
-
-Feel free to check out the [Strapi GitHub repository](https://github.com/strapi/strapi). Your feedback and contributions are welcome!
-
-## ✨ Community
-
-- [Discord](https://discord.strapi.io) - Come chat with the Strapi community including the core team.
-- [Forum](https://forum.strapi.io/) - Place to discuss, ask questions and find answers, show your Strapi project and get feedback or just talk with other Community members.
-- [Awesome Strapi](https://github.com/strapi/awesome-strapi) - A curated list of awesome things related to Strapi.
-
----
-
-<sub>🤫 Psst! [Strapi is hiring](https://strapi.io/careers).</sub>
+    その他ユーティリティ
+        dotenv: 環境変数を管理
+        nodemon: 開発中の自動再起動ツール
