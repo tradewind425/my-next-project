@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-// GraphQLクエリ
+// Simplified GraphQL query without pagination variables
 const GET_FOODS_QUERY = `
-  query GetFoods($start: Int!, $limit: Int!) {
-    foods(start: $start, limit: $limit) {
+  query GetFoods {
+    foods {
       data {
         id
         attributes {
@@ -28,7 +28,7 @@ const ApolloPage = () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             query: GET_FOODS_QUERY,
-            variables: { start: 0, limit: 10 },
+            // Removed variables object since it's not needed for this simplified query
           }),
         });
 
@@ -37,6 +37,7 @@ const ApolloPage = () => {
         }
 
         const result = await response.json();
+        // Ensure proper access to nested data based on the updated query structure
         setFoods(result.data.foods.data);
       } catch (err) {
         setError(err.message);
@@ -54,11 +55,11 @@ const ApolloPage = () => {
     <div>
       <h1>Foods</h1>
       <ul>
-        {foods.map((food) => (
-          <li key={food.id}>
-            <h2>{food.attributes.foodname}</h2>
-            <p>{food.attributes.description}</p>
-            <p>Price: {food.attributes.price}円</p>
+        {foods.map(({ id, attributes: { foodname, description, price } }) => (
+          <li key={id}>
+            <h2>{foodname}</h2>
+            <p>{description}</p>
+            <p>Price: {price}円</p>
           </li>
         ))}
       </ul>
