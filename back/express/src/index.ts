@@ -1,11 +1,14 @@
-// src/index.ts
 import 'dotenv/config';
 import express from 'express';
+import mongoose from 'mongoose';
 
 const app = express();
-const port = process.env.PORT || 3000; // .envファイルからPORTを読み込む、デフォルトは3000
+const port = process.env.PORT || 3000;
 
-// pingリクエストを処理
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mydatabase')
+  .then(() => console.log('MongoDBに接続しました。'))
+  .catch(err => console.error('MongoDBへの接続に失敗しました。', err));
+
 app.get('/ping', (req, res) => {
   res.send('pong!pong!');
 });
