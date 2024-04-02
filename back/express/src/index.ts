@@ -1,10 +1,14 @@
-// src/index.ts の先頭に追加
+// src/index.ts
 import 'dotenv/config';
-
 import express from 'express';
 
 const app = express();
 const port = process.env.PORT || 3000; // .envファイルからPORTを読み込む、デフォルトは3000
+
+// pingリクエストを処理
+app.get('/ping', (req, res) => {
+  res.send('pong!pong!');
+});
 
 app.get('/', (req, res) => {
   res.send(`
