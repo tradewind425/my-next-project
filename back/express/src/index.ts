@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
+import { Example } from '../models/Example'; // ここでExampleモデルをインポートします
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -14,22 +15,30 @@ app.get('/ping', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.send(`
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Hello World</title>
-    </head>
-    <body>
-      <h1>Hello World!!!!</h1>
-      <script>
-        console.log('Hello World!!');
-      </script>
-    </body>
-    </html>
-  `);
+  res.send('Hello World!!!!');
+});
+
+app.get('/data', async (req, res) => {
+    try {
+      const examples = await Example.find();
+      res.json(examples);
+    } catch (err) {
+      res.status(500).send('An error occurred');
+    }
+  });
+
+// MongoDBからデータを取得する新しいルート
+app.get('/examples', async (req, res) => {
+  try {
+    const examples = await Example.find();
+    res.json(examples);
+  } catch (err) {
+    if (err instanceof Error) {
+      res.status(500).send(err.message);
+    } else {
+      res.status(500).send('An error occurred');
+    }
+  }
 });
 
 app.listen(port, () => {
