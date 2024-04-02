@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 const app = express();
 const port = process.env.PORT || 3000;
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mydatabase')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/test')
   .then(() => console.log('MongoDBに接続しました。'))
   .catch(err => console.error('MongoDBへの接続に失敗しました。', err));
 
