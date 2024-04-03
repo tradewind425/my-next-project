@@ -2,10 +2,11 @@ import Phaser from 'phaser';
 
 export class GameScene_0 extends Phaser.Scene {
     private snakeHead!: Phaser.GameObjects.Text;
-    private moveInterval: number = 1000;
+    private moveInterval: number = 500;
     private lastMoveTime: number = 0;
-    // 進行方向を表すenum
     private direction: 'left' | 'right' | 'up' | 'down' = 'left';
+    private foods: Phaser.GameObjects.Text[] = [];
+    private foodCount: number = 5; // 配置する餌の数
 
     constructor() {
         super({ key: 'GameScene_0' });
@@ -23,6 +24,7 @@ export class GameScene_0 extends Phaser.Scene {
 
         this.setupGame();
         this.setupControls();
+        this.createFoods();
     }
 
     private setupGame(): void {
@@ -46,6 +48,18 @@ export class GameScene_0 extends Phaser.Scene {
         this.input.keyboard.on('keydown-D', () => {
             this.direction = 'right';
         });
+    }
+
+    private createFoods(): void {
+        for (let i = 0; i < this.foodCount; i++) {
+            const x = Phaser.Math.Between(0, this.sys.game.canvas.width);
+            const y = Phaser.Math.Between(0, this.sys.game.canvas.height);
+            const food = this.add.text(x, y, '・', {
+                font: '32px Arial',
+                color: '#ff0000'
+            }).setOrigin(0.5);
+            this.foods.push(food);
+        }
     }
 
     update(time: number): void {
