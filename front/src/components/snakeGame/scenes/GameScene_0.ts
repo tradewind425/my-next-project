@@ -1,7 +1,10 @@
 import Phaser from 'phaser';
+import { drawGrid } from '../views/components/drawGrid';
+import { setupControls } from '../controllers/snakeController';
 
 export class GameScene_0 extends Phaser.Scene {
     private snakeHead!: Phaser.GameObjects.Text;
+    private snakeBody: Phaser.GameObjects.Text[] = [];
     private moveInterval: number = 500;
     private lastMoveTime: number = 0;
     private direction: 'left' | 'right' | 'up' | 'down' = 'left';
@@ -24,48 +27,34 @@ export class GameScene_0 extends Phaser.Scene {
         });
 
         this.setupGame();
-        this.setupControls();
+        setupControls(this, this.setDirection);
         this.createFoods();
-        this.drawGrid();
+        drawGrid(this, 20);
     }
 
     private setupGame(): void {
-        const gridSize = 20; // グリッドのサイズを20に設定
+        const gridSize = 20;
         const { width, height } = this.sys.game.canvas;
-    
-        // グリッドに合わせて画面中央を計算する際、セルの中心ではなく、セル内に配置するための調整
-        // グリッドのサイズの半分を足して、グリッド内にヘビが収まるように調整
-        const centerX = Math.round((width / 2) / gridSize) * gridSize + (gridSize / 2);
-        const centerY = Math.round((height / 2) / gridSize) * gridSize + (gridSize / 2);
-    
+
+        const centerX = Math.round((width / 2) / gridSize) * gridSize;
+        const centerY = Math.round((height / 2) / gridSize) * gridSize;
+
         this.snakeHead = this.add.text(centerX, centerY, '◆', {
-            font: `${gridSize}px Arial`, // グリッドサイズに合わせてフォントサイズを設定
+            font: `${gridSize}px Arial`,
             color: '#00ff00'
         }).setOrigin(0.5);
     }
 
-    private setupControls(): void {
-        this.input.keyboard.on('keydown-W', () => {
-            this.direction = 'up';
-        });
-        this.input.keyboard.on('keydown-A', () => {
-            this.direction = 'left';
-        });
-        this.input.keyboard.on('keydown-S', () => {
-            this.direction = 'down';
-        });
-        this.input.keyboard.on('keydown-D', () => {
-            this.direction = 'right';
-        });
-    }
+    setDirection = (newDirection: 'left' | 'right' | 'up' | 'down'): void => {
+        this.direction = newDirection;
+    };
 
     private createFoods(): void {
-        const gridSize = 20; // グリッドのサイズ（ヘビの頭部分と同じサイズを仮定）
+        const gridSize = 20;
         const gridWidth = Math.floor(this.sys.game.canvas.width / gridSize);
         const gridHeight = Math.floor(this.sys.game.canvas.height / gridSize);
         const centerCoordinates = [];
-    
-        // グリッドの中心座標を計算して配列に保存
+
         for (let x = 0; x < gridWidth; x++) {
             for (let y = 0; y < gridHeight; y++) {
                 const centerX = (x * gridSize) + (gridSize / 2);
@@ -73,12 +62,11 @@ export class GameScene_0 extends Phaser.Scene {
                 centerCoordinates.push({ centerX, centerY });
             }
         }
-    
-        // 餌の数だけランダムに中心座標を選んで配置
+
         for (let i = 0; i < this.foodCount; i++) {
             const randomIndex = Phaser.Math.Between(0, centerCoordinates.length - 1);
             const { centerX, centerY } = centerCoordinates[randomIndex];
-    
+
             const food = this.add.text(centerX, centerY, '・', {
                 font: '32px Arial',
                 color: '#ff0000'
@@ -87,24 +75,15 @@ export class GameScene_0 extends Phaser.Scene {
         }
     }
 
-    private drawGrid(): void {
-        const gridSize = 20; // グリッドのサイズ
-        const { width, height } = this.sys.game.canvas;
-        this.graphics = this.add.graphics({ lineStyle: { width: 1, color: 0xffffff } });
-
-        // グリッドの描画
-        for (let x = 0; x < width; x += gridSize) {
-            this.graphics.lineBetween(x, 0, x, height);
-        }
-        for (let y = 0; y < height; y += gridSize) {
-            this.graphics.lineBetween(0, y, width, y);
-        }
-    }
-
     update(time: number): void {
-        const gridSize = 20; // グリッドのサイズ
+        const gridSize = 20;
     
         if (time - this.lastMoveTime > this.moveInterval) {
+            // ヘビの体の最後尾の位置を記録
+            let lastX = this.snakeHead.x;
+            let lastY = this.snakeHead.y;
+
+            // ヘビの頭の移動
             switch (this.direction) {
                 case 'left':
                     this.snakeHead.x -= gridSize;
@@ -119,6 +98,32 @@ export class GameScene_0 extends Phaser.Scene {
                     this.snakeHead.y += gridSize;
                     break;
             }
+
+            // ヘビの体の各部分を前の部分があった位置に移動
+            this.snakeBody.forEach(part => {
+                const tempX = part.x;
+                const tempY = part.y;
+                part.x = lastX;
+                part.y = lastY;
+                lastX = tempX;
+                lastY = tempY;
+            });
+
+            // ヘビと餌の衝突検出
+            this.foods.forEach((food, index) => {
+                if (Phaser.Geom.Intersects.RectangleToRectangle(this.snakeHead.getBounds(), food.getBounds())) {
+                    food.destroy(); // 餌を消去
+                    this.foods.splice(index, 1); // 配列から削除
+
+                    // 新しい体の部分を追加
+                    const newPart = this.add.text(lastX, lastY, '◇', {
+                        font: `${gridSize}px Arial`,
+                        color: '#00ff00'
+                    }).setOrigin(0.5);
+                    this.snakeBody.push(newPart);
+                }
+            });
+
             this.lastMoveTime = time;
         }
     }
