@@ -1,8 +1,11 @@
 import Phaser from 'phaser';
 
 export class GameScene_0 extends Phaser.Scene {
-    // 蛇の頭の表現用のテキスト
     private snakeHead!: Phaser.GameObjects.Text;
+    private moveInterval: number = 1000;
+    private lastMoveTime: number = 0;
+    // 進行方向を表すenum
+    private direction: 'left' | 'right' | 'up' | 'down' = 'left';
 
     constructor() {
         super({ key: 'GameScene_0' });
@@ -13,17 +16,16 @@ export class GameScene_0 extends Phaser.Scene {
     }
 
     create(): void {
-        // ESCキーを押すとポーズ画面を表示
         this.input.keyboard.on('keydown-ESC', () => {
             this.scene.pause();
             this.scene.launch('PauseScene', { previousSceneKey: this.scene.key });
         });
 
         this.setupGame();
+        this.setupControls();
     }
 
     private setupGame(): void {
-        // 画面中央に蛇の頭を表現するテキストオブジェクトを配置
         const { width, height } = this.sys.game.canvas;
         this.snakeHead = this.add.text(width / 2, height / 2, '◆', {
             font: '48px Arial',
@@ -31,7 +33,38 @@ export class GameScene_0 extends Phaser.Scene {
         }).setOrigin(0.5);
     }
 
-    update(): void {
-        // 蛇の頭の更新処理をここに実装する
+    private setupControls(): void {
+        this.input.keyboard.on('keydown-W', () => {
+            this.direction = 'up';
+        });
+        this.input.keyboard.on('keydown-A', () => {
+            this.direction = 'left';
+        });
+        this.input.keyboard.on('keydown-S', () => {
+            this.direction = 'down';
+        });
+        this.input.keyboard.on('keydown-D', () => {
+            this.direction = 'right';
+        });
+    }
+
+    update(time: number): void {
+        if (time - this.lastMoveTime > this.moveInterval) {
+            switch (this.direction) {
+                case 'left':
+                    this.snakeHead.x -= this.snakeHead.width;
+                    break;
+                case 'right':
+                    this.snakeHead.x += this.snakeHead.width;
+                    break;
+                case 'up':
+                    this.snakeHead.y -= this.snakeHead.height;
+                    break;
+                case 'down':
+                    this.snakeHead.y += this.snakeHead.height;
+                    break;
+            }
+            this.lastMoveTime = time;
+        }
     }
 }
