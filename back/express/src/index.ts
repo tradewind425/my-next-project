@@ -27,20 +27,6 @@ app.get('/data', async (req, res) => {
     }
   });
 
-// MongoDBからデータを取得する新しいルート
-app.get('/examples', async (req, res) => {
-  try {
-    const examples = await Example.find();
-    res.json(examples);
-  } catch (err) {
-    if (err instanceof Error) {
-      res.status(500).send(err.message);
-    } else {
-      res.status(500).send('An error occurred');
-    }
-  }
-});
-
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
