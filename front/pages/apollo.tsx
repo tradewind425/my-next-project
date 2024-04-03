@@ -1,3 +1,7 @@
+//pagenationの実装は現状難しいのであきらめる
+//graphQL APIの使用ポイントを別途考える
+//→記述が少ない点など
+
 import React from 'react';
 import { ApolloClient, InMemoryCache, useQuery, ApolloProvider } from '@apollo/client';
 import { GET_FOODS_QUERY } from '../graphql/GetFoods'; // GetFoods.tsからクエリをインポート
