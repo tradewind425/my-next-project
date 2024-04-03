@@ -5,40 +5,44 @@ import { setupControls } from '../controllers/snakeController';
 export class GameScene_0 extends Phaser.Scene {
     private snakeHead!: Phaser.GameObjects.Text;
     private snakeBody: Phaser.GameObjects.Text[] = [];
-    private moveInterval: number = 500;
-    private lastMoveTime: number = 0;
+    private moveInterval = 500;
+    private lastMoveTime = 0;
     private direction: 'left' | 'right' | 'up' | 'down' = 'left';
     private foods: Phaser.GameObjects.Text[] = [];
-    private foodCount: number = 20; // 配置する餌の数
-    graphics!: Phaser.GameObjects.Graphics;
+    private foodCount = 20;
 
     constructor() {
         super({ key: 'GameScene_0' });
     }
 
     preload(): void {
-        // 必要なアセットをロードする場所
+        // アセットのロード処理
     }
 
     create(): void {
-        this.input.keyboard.on('keydown-ESC', () => {
-            this.scene.pause();
-            this.scene.launch('PauseScene', { previousSceneKey: this.scene.key });
-        });
-
-        this.setupGame();
+        this.initializeGame();
         setupControls(this, this.setDirection);
         this.createFoods();
         drawGrid(this, 20);
     }
 
-    private setupGame(): void {
+    private initializeGame(): void {
+        this.setupGameArea();
+        this.createSnakeHead();
+    }
+
+    private setupGameArea(): void {
+        this.input.keyboard.on('keydown-ESC', () => {
+            this.scene.pause();
+            this.scene.launch('PauseScene', { previousSceneKey: this.scene.key });
+        });
+    }
+
+    private createSnakeHead(): void {
         const gridSize = 20;
         const { width, height } = this.sys.game.canvas;
-
         const centerX = Math.round((width / 2) / gridSize) * gridSize;
         const centerY = Math.round((height / 2) / gridSize) * gridSize;
-
         this.snakeHead = this.add.text(centerX, centerY, '◆', {
             font: `${gridSize}px Arial`,
             color: '#00ff00'
@@ -46,6 +50,13 @@ export class GameScene_0 extends Phaser.Scene {
     }
 
     setDirection = (newDirection: 'left' | 'right' | 'up' | 'down'): void => {
+        if (this.direction === 'left' && newDirection === 'right' ||
+            this.direction === 'right' && newDirection === 'left' ||
+            this.direction === 'up' && newDirection === 'down' ||
+            this.direction === 'down' && newDirection === 'up') {
+            // 逆方向には変更しない
+            return;
+        }
         this.direction = newDirection;
     };
 
