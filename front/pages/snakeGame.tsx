@@ -4,16 +4,16 @@ import React from 'react';
 
 // BreakOutゲームのコンポーネントを動的にインポートし、サーバーサイドレンダリングを無効化
 // Phaserなどクライアントサイドでのみ動作するライブラリの場合、この方法が推奨される
-const FrameWorkGameNoSSR = dynamic(() => import('../src/components/framework/Main'), {
+const SnakeGameNoSSR = dynamic(() => import('../src/components/snakeGame/Main'), {
   ssr: false, // SSRを無効化してクライアントサイドでのレンダリングを強制
 });
 
-const FrameWorkGame: React.FC = () => {
+const SnakeGame: React.FC = () => {
   return (
     <main>
-      <FrameWorkGameNoSSR />
+      <SnakeGameNoSSR />
     </main>
   );
 };
 
-export default FrameWorkGame;
+export default SnakeGame;

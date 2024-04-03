@@ -12,7 +12,7 @@ export class TitleScene extends Phaser.Scene {
       color: '#ffffff',
     };
     // タイトルテキストを画面中央に表示
-    this.add.text(this.cameras.main.centerX, 150, 'フレームワークゲーム', titleStyle).setOrigin(0.5);
+    this.add.text(this.cameras.main.centerX, 150, 'スネークゲーム🐍', titleStyle).setOrigin(0.5);
 
     // ボタンを作成する関数
     const createButton = (text: string, y: number, callback: () => void) => {

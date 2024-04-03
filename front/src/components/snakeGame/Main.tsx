@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import { gameStore } from './store/GameStore'; // Reduxストアのインポート
 import GameLayout from './GameLayout'; // GameLayoutコンポーネントのインポート
 
-const FrameWorkGame: React.FC = () => {
+const SnakeGame: React.FC = () => {
     const gameRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -32,4 +32,4 @@ const FrameWorkGame: React.FC = () => {
     );
 };
 
-export default FrameWorkGame;
+export default SnakeGame;
