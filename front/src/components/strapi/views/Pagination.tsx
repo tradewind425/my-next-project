@@ -1,17 +1,30 @@
 // src/components/strapi/views/Pagination.tsx
 import React from 'react';
 
-// ページネーションのプロパティの型定義
 interface PaginationProps {
-  currentPage: number; // 現在のページ番号
-  totalPages: number;  // 総ページ数
-  setCurrentPage: (page: number) => void; // ページ番号を設定する関数
+  currentPage: number;
+  totalPages: number;
+  setCurrentPage: (page: number) => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, setCurrentPage }) => {
+  // ページネーションコントロールの表示範囲を計算
+  const startPage = Math.max(1, currentPage - 2);
+  const endPage = Math.min(totalPages, currentPage + 2);
+
   return (
     <div className="flex mt-8 justify-center space-x-2">
-      {/* "前のページ"ボタン。最初のページ以外で表示 */}
+      {/* 最初のページへ */}
+      {currentPage > 1 && (
+        <button
+          className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+          onClick={() => setCurrentPage(1)}
+        >
+          最初のページ
+        </button>
+      )}
+
+      {/* "前のページ"ボタン */}
       {currentPage > 1 && (
         <button
           className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
@@ -20,23 +33,35 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, setCur
           前のページ
         </button>
       )}
-      {/* 各ページ番号ボタン。選択されているページは色が異なる */}
-      {Array.from({ length: totalPages }, (_, i) => (
+
+      {/* 近傍のページ番号 */}
+      {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((page) => (
         <button
-          key={i}
-          className={`px-3 py-1 rounded ${i + 1 === currentPage ? 'bg-green-700 text-white' : 'bg-green-300 text-green-900'} hover:bg-green-600`}
-          onClick={() => setCurrentPage(i + 1)}
+          key={page}
+          className={`px-3 py-1 rounded ${page === currentPage ? 'bg-green-700 text-white' : 'bg-green-300 text-green-900'} hover:bg-green-600`}
+          onClick={() => setCurrentPage(page)}
         >
-          {i + 1}
+          {page}
         </button>
       ))}
-      {/* "次のページ"ボタン。最後のページ以外で表示 */}
+
+      {/* "次のページ"ボタン */}
       {currentPage < totalPages && (
         <button
           className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
           onClick={() => setCurrentPage(currentPage + 1)}
         >
           次のページ
+        </button>
+      )}
+
+      {/* 最後のページへ */}
+      {currentPage < totalPages && (
+        <button
+          className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+          onClick={() => setCurrentPage(totalPages)}
+        >
+          最後のページ
         </button>
       )}
     </div>

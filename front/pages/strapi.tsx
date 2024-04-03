@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import Main from '../src/components/strapi/Main';
 import { Food } from '../src/components/strapi/types/types';
 
-// APIから取得する応答の型定義をここに保持
+// APIから取得する応答の型定義
 type ApiResponse = {
   data: Food[];
   meta: {
     pagination: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
+      page: number; // 現在のページ
+      pageSize: number; // 1ページあたりのアイテム数
+      pageCount: number; // 総ページ数
+      total: number; // 総アイテム数
     };
   };
 };
@@ -21,16 +21,20 @@ export default function StrapiPage() {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
+    const pageSize = 6; // 1ページあたりのコンテンツ数
+    const fetchUrl = `http://localhost:4000/api/foods?pagination[pageSize]=${pageSize}&pagination[page]=${currentPage}`;
+    
     const fetchData = async () => {
-      const pageSize = 6;
-      const response = await fetch(`http://localhost:4000/api/foods?_limit=${pageSize}&_start=${(currentPage - 1) * pageSize}`);
+      const response = await fetch(fetchUrl);
       const result: ApiResponse = await response.json();
       setFoods(result.data);
-      setTotalPages(Math.ceil(result.meta.pagination.total / pageSize));
+      setTotalPages(result.meta.pagination.pageCount);
     };
 
     fetchData();
   }, [currentPage]);
 
-  return <Main foods={foods} currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />;
+  return (
+    <Main foods={foods} currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+  );
 }
