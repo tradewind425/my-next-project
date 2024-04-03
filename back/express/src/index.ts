@@ -10,14 +10,17 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/test')
   .then(() => console.log('MongoDBに接続しました。'))
   .catch(err => console.error('MongoDBへの接続に失敗しました。', err));
 
-app.get('/ping', (req, res) => {
+//Expressローカルにアクセスしたときのコンテンツ
+  app.get('/', (req, res) => {
+    res.send('Hello World!!!!');
+  });
+
+//ping pong 反応(HTTPリクエスト)
+  app.get('/ping', (req, res) => {
   res.send('pong!pong!');
 });
 
-app.get('/', (req, res) => {
-  res.send('Hello World!!!!');
-});
-
+//MongoDBからフェッチ(HTTPリクエスト)
 app.get('/data', async (req, res) => {
     try {
       const examples = await Example.find();
